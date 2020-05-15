@@ -1,14 +1,86 @@
 version: '3'
 
 services:
-  opendaylight:
-    image: quay.io/blue-onap/opendaylight:v0.12.0-2
-    container_name: opendaylight
-    ports:
-      - "8101:8101"
-      - "8181:8181"
-      - "6666:6666"
+  odl-1:
+    image: teste:latest
+    container_name: odl-1
     environment:
-      - KARAF_FEATURES_BOOT=odl-restconf-all,odl-netconf-connector-all
+      - CLUSTER_INDEX=1
     volumes:
       - ./config:/config
+    networks:
+            odl_net:
+                   ipv4_address: 172.28.1.1
+ 
+  odl-2:
+    image: teste:latest
+    container_name: odl-2
+    environment:
+      - CLUSTER_INDEX=2
+    volumes:
+      - ./config:/config
+    networks:
+            odl_net:
+                   ipv4_address: 172.28.1.2
+
+  odl-3:
+    image: teste:latest
+    container_name: odl-3
+    environment:
+      - CLUSTER_INDEX=3
+    volumes:
+      - ./config:/config
+    networks:
+            odl_net:
+                   ipv4_address: 172.28.1.3
+
+  odl-4:
+    image: teste:latest
+    container_name: odl-4
+    environment:
+      - CLUSTER_INDEX=4
+    volumes:
+      - ./config:/config
+    networks:
+            odl_net:
+                   ipv4_address: 172.28.1.4
+
+  odl-5:
+    image: teste:latest
+    container_name: odl-5
+    environment:
+      - CLUSTER_INDEX=5
+    volumes:
+      - ./config:/config
+    networks:
+            odl_net:
+                   ipv4_address: 172.28.1.5
+  odl-6:
+    image: teste:latest
+    container_name: odl-6
+    environment:
+      - CLUSTER_INDEX=6
+    volumes:
+      - ./config:/config
+    networks:
+            odl_net:
+                   ipv4_address: 172.28.1.6
+
+  odl-7:
+    image: teste:latest
+    container_name: odl-7
+    environment:
+      - CLUSTER_INDEX=7
+    volumes:
+      - ./config:/config
+    networks:
+            odl_net:
+                   ipv4_address: 172.28.1.7
+
+
+networks:
+        odl_net:
+                ipam:
+                        driver: default
+                        config:
+                                - subnet: 172.28.0.0/16

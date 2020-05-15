@@ -52,11 +52,12 @@ RUN set -eux; \
     sed -i.orig $archive_basename/bin/karaf \
       -e 's/^\( *\)\(-Dkaraf.etc="\${KARAF_ETC}"\)\( *\\\)$/\1\2\3\n\1-Dkaraf.features.repositories="\${KARAF_FEATURES_REPOSITORIES}"\3\n\1-Dkaraf.features.boot="\${KARAF_FEATURES_BOOT}"\3/'; \
     mv $archive_basename $HOME; \
+    mkdir $HOME/configuration/initial/; \
     chown -R karaf:karaf $HOME
 
 RUN apk add --no-cache \
     coreutils \
-    curl
+    curl 
 
 COPY etc/ $HOME/etc/
 
@@ -69,10 +70,15 @@ WORKDIR $HOME
 
 ENV JAVA_HOME=/opt/java/openjdk
 ENV PATH=$JAVA_HOME/bin:/usr/local/bin:/usr/bin:/bin
+ENV JAVA_MAX_MEM 4G 
+ENV JAVA_MAX_PERM_MEM 512m
 
 VOLUME /config
 
 COPY configure-tls.sh /opt/bin/
+COPY /config/akka.conf configuration/initial/
+COPY /config/modules.conf configuration/initial/
+COPY /config/module-shards.conf configuration/initial/
 
 #
 # Mutable data files
@@ -104,4 +110,9 @@ EXPOSE 8181
 # SSH Call Home
 EXPOSE 6666
 
-ENTRYPOINT $HOME/bin/karaf run
+# Openflow
+EXPOSE 6633
+
+ENTRYPOINT ["/config/entrypoint.sh"]
+
+
