@@ -7,5 +7,7 @@ sed -i "s/\"172.28.1.2\"/\"172.28.1.$CLUSTER_INDEX\"/g" configuration/initial/ak
 
 export KARAF_FEATURES_BOOT=odl-restconf-all,odl-openflowplugin-flow-services-rest,odl-openflowplugin-app-table-miss-enforcer,odl-openflowplugin-nxm-extensions,odl-mdsal-clustering
 
+sh $HOME/bin/set_persistence.sh on
+
 exec $HOME/bin/karaf run
 
